@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Techtonic Studios - Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#7c3aed">
+    
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <link rel="icon" type="image/svg+xml" href="/logo.png">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d1b69 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 500px;
+            padding: 2rem;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        p {
+            opacity: 0.8;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(124, 58, 237, 0.3);
+            border-top: 3px solid #7c3aed;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .manual-link {
+            margin-top: 2rem;
+            opacity: 0.6;
+        }
+        
+        .manual-link a {
+            color: #a855f7;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-bottom-color 0.3s ease;
+        }
+        
+        .manual-link a:hover {
+            border-bottom-color: #a855f7;
+        }
+    </style>
+      <script>
+        // GitHub Pages SPA redirect solution
+        // This script captures the current URL and redirects to the main app
+        // with the path stored in sessionStorage that your React router can handle
+        
+        (function(l) {
+            // Handle GitHub Pages redirect parameters
+            if (l.search[1] === '/' ) {
+                var decoded = sessionStorage.redirect || l.search.slice(1);
+                if (decoded) {
+                    sessionStorage.redirect = decoded;
+                }
+            }
+        }(window.location));
+        
+        // Store the intended path including query params and hash
+        var fullPath = window.location.pathname + window.location.search + window.location.hash;
+        
+        console.log('404 redirect - storing path:', fullPath);
+        sessionStorage.setItem('redirectPath', fullPath);
+        
+        // Redirect to the main app after a short delay
+        setTimeout(function() {
+            console.log('404 redirect - redirecting to index.html');
+            window.location.replace(window.location.origin + '/index.html');
+        }, 1000);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">T</div>
+        <h1>Redirecting...</h1>
+        <p>We're taking you to the right place. Please wait a moment.</p>
+        <div class="spinner"></div>
+        <div class="manual-link">
+            <p>If you're not redirected automatically, <a href="/index.html">click here</a>.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -44,9 +44,49 @@
     <link rel="modulepreload" crossorigin href="/assets/vendor-C8JWU_y-.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-2KAH89kB.js">
     <link rel="modulepreload" crossorigin href="/assets/three-BASJz54-.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-D0v8Asdj.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-D0v8Asdj.css">      <!-- GitHub Pages SPA redirect handling -->
+    <script>
+      // Handle redirected paths from 404.html
+      (function() {
+        var redirectPath = sessionStorage.getItem('redirectPath');
+        if (redirectPath) {
+          sessionStorage.removeItem('redirectPath');
+          
+          // Immediately update the URL before React loads
+          window.history.replaceState(null, null, redirectPath);
+          
+          // Also wait for React to fully load and trigger router update
+          var checkRouter = function() {
+            // Check if React Router is available and trigger navigation
+            if (window.history && window.history.pushState) {
+              // Force a navigation event for React Router
+              window.dispatchEvent(new PopStateEvent('popstate', { state: null }));
+              
+              // Alternative method: dispatch a custom event
+              var customEvent = new CustomEvent('routechange', { 
+                detail: { path: redirectPath } 
+              });
+              window.dispatchEvent(customEvent);
+            }
+          };
+          
+          // Try multiple timing approaches to ensure it works
+          window.addEventListener('load', function() {
+            setTimeout(checkRouter, 50);
+            setTimeout(checkRouter, 200);
+            setTimeout(checkRouter, 500);
+          });
+          
+          // Also try immediately
+          if (document.readyState === 'complete') {
+            setTimeout(checkRouter, 50);
+          }
+        }
+      })();
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
+
   </body>
 </html>
