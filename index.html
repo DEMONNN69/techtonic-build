@@ -44,19 +44,41 @@
     <link rel="modulepreload" crossorigin href="/assets/vendor-C8JWU_y-.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-2KAH89kB.js">
     <link rel="modulepreload" crossorigin href="/assets/three-BASJz54-.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-D0v8Asdj.css">      <!-- GitHub Pages SPA redirect handling -->
+    <link rel="stylesheet" crossorigin href="/assets/index-D0v8Asdj.css">    <!-- GitHub Pages SPA redirect handling -->
     <script>
-      // Handle redirected paths from 404.html
+      // Handle redirected paths from 404.html - Multiple methods for reliability
       (function() {
-        var redirectPath = sessionStorage.getItem('redirectPath');
+        var redirectPath = null;
+        
+        // Method 1: Check sessionStorage
+        redirectPath = sessionStorage.getItem('redirectPath');
         if (redirectPath) {
           sessionStorage.removeItem('redirectPath');
+          console.log('Found redirect path in sessionStorage:', redirectPath);
+        }
+        
+        // Method 2: Check URL parameter as fallback
+        if (!redirectPath) {
+          var urlParams = new URLSearchParams(window.location.search);
+          var pathParam = urlParams.get('p');
+          if (pathParam) {
+            redirectPath = decodeURIComponent(pathParam);
+            console.log('Found redirect path in URL parameter:', redirectPath);
+            // Clean up the URL by removing the parameter
+            var cleanUrl = window.location.pathname;
+            window.history.replaceState(null, null, cleanUrl);
+          }
+        }
+        
+        if (redirectPath && redirectPath !== '/') {
+          console.log('Redirecting to:', redirectPath);
           
           // Immediately update the URL before React loads
           window.history.replaceState(null, null, redirectPath);
           
           // Also wait for React to fully load and trigger router update
           var checkRouter = function() {
+            console.log('Triggering router update for:', redirectPath);
             // Check if React Router is available and trigger navigation
             if (window.history && window.history.pushState) {
               // Force a navigation event for React Router

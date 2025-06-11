@@ -93,32 +93,26 @@
         .manual-link a:hover {
             border-bottom-color: #a855f7;
         }
-    </style>
-      <script>
-        // GitHub Pages SPA redirect solution
-        // This script captures the current URL and redirects to the main app
-        // with the path stored in sessionStorage that your React router can handle
+    </style>    <script>
+        // GitHub Pages SPA redirect solution - Alternative method using URL parameters
+        // This method encodes the path in the URL itself as a fallback
         
-        (function(l) {
-            // Handle GitHub Pages redirect parameters
-            if (l.search[1] === '/' ) {
-                var decoded = sessionStorage.redirect || l.search.slice(1);
-                if (decoded) {
-                    sessionStorage.redirect = decoded;
-                }
-            }
-        }(window.location));
+        var currentPath = window.location.pathname + window.location.search + window.location.hash;
         
-        // Store the intended path including query params and hash
-        var fullPath = window.location.pathname + window.location.search + window.location.hash;
+        console.log('404 redirect - current path:', currentPath);
         
-        console.log('404 redirect - storing path:', fullPath);
-        sessionStorage.setItem('redirectPath', fullPath);
+        // Method 1: Store in sessionStorage (primary)
+        sessionStorage.setItem('redirectPath', currentPath);
         
-        // Redirect to the main app after a short delay
+        // Method 2: Encode in URL as backup
+        var encodedPath = encodeURIComponent(currentPath);
+        var redirectUrl = window.location.origin + '/index.html?p=' + encodedPath;
+        
+        console.log('404 redirect - redirecting to:', redirectUrl);
+        
+        // Try sessionStorage first, then URL parameter method
         setTimeout(function() {
-            console.log('404 redirect - redirecting to index.html');
-            window.location.replace(window.location.origin + '/index.html');
+            window.location.replace(redirectUrl);
         }, 1000);
     </script>
 </head>
